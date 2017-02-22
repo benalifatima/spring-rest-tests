@@ -11,6 +11,10 @@ import com.worldline.fpl.recruitment.entity.Transaction;
  * @author A525125
  *
  */
+/**
+ * @author candidat_awl
+// *
+ */
 public interface TransactionRepository {
 
 	/**

@@ -56,11 +56,36 @@ public class TransactionRepositoryImpl implements TransactionRepository,
 	}
 
 	@Override
-	public Page<Transaction> getTransactionsByAccount(String accountId,
-			Pageable p) {
-		return new PageImpl<Transaction>(transactions.stream()
-				.filter(t -> t.getAccountId().equals(accountId))
-				.collect(Collectors.toList()));
+	public Page<Transaction> getTransactionsByAccount(String accountId, Pageable p) {
+		return new PageImpl<Transaction>(
+				transactions.stream().filter(t -> t.getAccountId().equals(accountId)).collect(Collectors.toList()));
+	}
+
+	@Override
+	public void deleteTransaction(String idTransaction) {
+		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
+			Transaction transaction = iterator.next();
+			if (transaction.getId() == idTransaction) {
+				iterator.remove();
+			}
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.worldline.fpl.recruitment.dao.TransactionRepository#getTransactionById(java.lang.String)
+	 */
+	@Override
+	public Transaction getTransactionById(String idtransaction) {
+		for (Transaction transaction : transactions) {
+			if (transaction.getId() == idtransaction) {
+				return transaction;
+			}
+		}
+
+		return null;
+		
+		
 	}
 
 }
