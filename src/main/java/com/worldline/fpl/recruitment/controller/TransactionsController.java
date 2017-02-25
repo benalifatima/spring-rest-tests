@@ -1,5 +1,6 @@
 package com.worldline.fpl.recruitment.controller;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.worldline.fpl.recruitment.entity.Transaction;
 import com.worldline.fpl.recruitment.json.ErrorResponse;
 import com.worldline.fpl.recruitment.json.TransactionResponse;
 
@@ -23,8 +25,8 @@ import com.worldline.fpl.recruitment.json.TransactionResponse;
  * @author A525125
  *
  */
-@RequestMapping(value = "/accounts/{accountId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
-public interface TransactionController {
+@RequestMapping(value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+public interface TransactionsController {
 
 	/**
 	 * Get transaction list by account
@@ -35,14 +37,21 @@ public interface TransactionController {
 	 *            the pageable information
 	 * @return the transaction list
 	 */
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	@ApiOperation(value = "Get transaction list related to an account", response = TransactionResponse.class, responseContainer = "List")
+	@RequestMapping(value = "/{accountId}/{transactionId}", method = RequestMethod.PUT)
 	@ApiResponses({
 			@ApiResponse(code = 404, message = "Account not found", response = ErrorResponse.class),
 			@ApiResponse(code = 204, message = "No transactions", response = ErrorResponse.class) })
-	ResponseEntity<Page<TransactionResponse>> getTransactionsByAccount(
+	public ResponseEntity<Void> addTransactionToAccount(
 			@ApiParam("Account ID") @PathVariable("accountId") String accountId,
-			@ApiParam("Pageable information") @PageableDefault Pageable p);
+			@ApiParam("Transaction ID") @PathVariable("transactionId") String transactionId);
+	
+	
+	
+	@RequestMapping(value = "/transaction", method = RequestMethod.PUT)
+	@ApiResponses({
+			@ApiResponse(code = 404, message = "Account not found", response = ErrorResponse.class),
+			@ApiResponse(code = 204, message = "No transactions", response = ErrorResponse.class) })
+	ResponseEntity<Void> updateTransaction(Transaction transaction);
 
 
 

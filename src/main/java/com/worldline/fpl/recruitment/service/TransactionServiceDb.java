@@ -1,6 +1,5 @@
 package com.worldline.fpl.recruitment.service;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.worldline.fpl.recruitment.dao.TransactionRepository;
+import com.worldline.fpl.recruitment.dao.TransactionRepositoryDb;
 import com.worldline.fpl.recruitment.entity.Transaction;
 import com.worldline.fpl.recruitment.exception.ServiceException;
 import com.worldline.fpl.recruitment.json.ErrorCode;
@@ -22,17 +22,17 @@ import com.worldline.fpl.recruitment.json.TransactionResponse;
  *
  */
 @Service
-public class TransactionService {
+public class TransactionServiceDb {
 
-	private AccountService accountService;
+	private AccountServiceDb accountServiceDb;
 
-	private TransactionRepository transactionRepository;
+	private TransactionRepositoryDb transactionRepositoryDb;
 
 	@Autowired
-	public TransactionService(AccountService accountService,
-			TransactionRepository transactionRepository) {
-		this.accountService = accountService;
-		this.transactionRepository = transactionRepository;
+	public TransactionServiceDb(AccountServiceDb accountServicedb,
+			TransactionRepositoryDb transactionRepositoryDb) {
+		this.accountServiceDb = accountServiceDb;
+		this.transactionRepositoryDb = transactionRepositoryDb;
 	}
 
 	/**
@@ -46,14 +46,26 @@ public class TransactionService {
 	 */
 	public Page<TransactionResponse> getTransactionsByAccount(String accountId,
 			Pageable p) {
-		if (!accountService.isAccountExist(accountId)) {
+		if (!accountServiceDb.isAccountExist(accountId)) {
 			throw new ServiceException(ErrorCode.INVALID_ACCOUNT,
 					"Account doesn't exist");
 		}
-		return new PageImpl<TransactionResponse>(transactionRepository
+		return new PageImpl<TransactionResponse>(transactionRepositoryDb
 				.getTransactionsByAccount(accountId, p).getContent().stream()
 				.map(this::map).collect(Collectors.toList()));
 	}
+
+	/* Exercice 4 */
+	public void addTransactiontoAccount(String idAccount, String idTransaction) {
+		Transaction transaction = this.transactionRepositoryDb.findById(idTransaction);
+		transaction.setId(idAccount);
+		this.transactionRepositoryDb.updateTransaction(transaction);
+	}
+	
+	public void updateTransaction(Transaction transaction) {
+		this.transactionRepositoryDb.updateTransaction(transaction);
+	}
+	
 
 	/**
 	 * Map {@link Transaction} to {@link TransactionResponse}
@@ -68,19 +80,4 @@ public class TransactionService {
 		result.setNumber(transaction.getNumber());
 		return result;
 	}
-	/* Exercice 4 */
-	public void addTransactiontoAccount(String idAccount, String idTransaction) {
-	Transaction transaction =this.transactionRepository.findById(idTransaction).orElseThrow(
-			() -> new ServiceException(ErrorCode.INVALID_TRANSACTION,
-					"Transaction doesn't exist"));;
-		
-		transaction.setId(idAccount);
-		this.transactionRepository.updateTransaction(transaction);
-	}
-	
-	public void updateTransaction(Transaction transaction) {
-		this.transactionRepository.updateTransaction(transaction);
-	}
-	
-	
 }

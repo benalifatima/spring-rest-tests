@@ -1,7 +1,5 @@
 package com.worldline.fpl.recruitment.dao;
 
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +15,7 @@ import com.worldline.fpl.recruitment.entity.Transaction;
  * @author ASUS
  *
  */
-public interface TransactionRepository {
+public interface TransactionRepositoryDb {
 
 	/**
 	 * Get transactions by account
@@ -32,5 +30,5 @@ public interface TransactionRepository {
 
 	void updateTransaction(Transaction transaction);
 
-	Optional<Transaction> findById(String transactionId);
+	Transaction findById(String transactionId);
 }

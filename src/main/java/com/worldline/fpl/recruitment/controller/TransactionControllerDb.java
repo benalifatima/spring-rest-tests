@@ -23,8 +23,8 @@ import com.worldline.fpl.recruitment.json.TransactionResponse;
  * @author A525125
  *
  */
-@RequestMapping(value = "/accounts/{accountId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
-public interface TransactionController {
+@RequestMapping(value = "/accountsDb/{accountId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+public interface TransactionControllerDb {
 
 	/**
 	 * Get transaction list by account
@@ -43,7 +43,5 @@ public interface TransactionController {
 	ResponseEntity<Page<TransactionResponse>> getTransactionsByAccount(
 			@ApiParam("Account ID") @PathVariable("accountId") String accountId,
 			@ApiParam("Pageable information") @PageableDefault Pageable p);
-
-
 
 }

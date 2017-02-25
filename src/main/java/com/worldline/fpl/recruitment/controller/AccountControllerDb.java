@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiResponses;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,8 +24,8 @@ import com.worldline.fpl.recruitment.json.ErrorResponse;
  * @author A525125
  *
  */
-@RequestMapping(value = "/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
-public interface AccountController {
+@RequestMapping(value = "/accountsDb", produces = MediaType.APPLICATION_JSON_VALUE)
+public interface AccountControllerDb {
 
 	/**
 	 * Get account list
@@ -40,9 +38,8 @@ public interface AccountController {
 	@ApiOperation(value = "Get account list", response = AccountResponse.class, responseContainer = "List")
 	@ApiResponses({ @ApiResponse(code = 204, message = "No accounts", response = ErrorResponse.class) })
 	ResponseEntity<Page<AccountResponse>> getAccounts(
-			@ApiParam("Pageable information") @SortDefault(sort = "id", direction = Direction.ASC) @PageableDefault(page = 0, size = 20) Pageable pageable);
+			@ApiParam("Pageable information") @PageableDefault Pageable p);
 
-	
 	/**
 	 * Get account details
 	 * 

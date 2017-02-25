@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.worldline.fpl.recruitment.controller.TransactionController;
+import com.worldline.fpl.recruitment.controller.TransactionControllerDb;
 import com.worldline.fpl.recruitment.json.TransactionResponse;
 import com.worldline.fpl.recruitment.service.TransactionService;
+import com.worldline.fpl.recruitment.service.TransactionServiceDb;
 
 /**
  * Implementation of {@link TransactionController}
@@ -23,20 +25,20 @@ import com.worldline.fpl.recruitment.service.TransactionService;
  */
 @Slf4j
 @RestController
-public class TransactionControllerImpl implements TransactionController {
+public class TransactionControllerImplDb implements TransactionControllerDb {
 
-	private TransactionService transactionService;
+	private TransactionServiceDb transactionServiceDb;
 
 	@Autowired
-	public TransactionControllerImpl(TransactionService transactionService) {
-		this.transactionService = transactionService;
+	public TransactionControllerImplDb(TransactionServiceDb transactionServiceDb) {
+		this.transactionServiceDb = transactionServiceDb;
 	}
 
 	@Override
 	public ResponseEntity<Page<TransactionResponse>> getTransactionsByAccount(
 			@PathVariable("accountId") String accountId,
 			@PageableDefault Pageable p) {
-		Page<TransactionResponse> page = transactionService
+		Page<TransactionResponse> page = transactionServiceDb
 				.getTransactionsByAccount(accountId, p);
 		if (null == page || page.getTotalElements() == 0) {
 			log.debug("Cannot find transaction for account {}", accountId);
@@ -44,7 +46,6 @@ public class TransactionControllerImpl implements TransactionController {
 		}
 		return ResponseEntity.ok().body(page);
 	}
-
 
 
 }
