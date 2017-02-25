@@ -2,6 +2,7 @@ package com.worldline.fpl.recruitment.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,7 +65,15 @@ public class TransactionRepositoryImpl implements TransactionRepository,
 				.collect(Collectors.toList()));
 	}
 
-
+	@Override
+	public void deleteTransaction(String idTransaction) {
+		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
+			Transaction transaction = iterator.next();
+			if (transaction.getId() == idTransaction) {
+				iterator.remove();
+			}
+		}
+	}
 
 	/* Exercice 4 */
 	@Override

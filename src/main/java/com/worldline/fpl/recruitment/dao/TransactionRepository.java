@@ -14,8 +14,8 @@ import com.worldline.fpl.recruitment.entity.Transaction;
  *
  */
 /**
- * @author ASUS
- *
+ * @author candidat_awl
+// *
  */
 public interface TransactionRepository {
 
@@ -33,4 +33,6 @@ public interface TransactionRepository {
 	void updateTransaction(Transaction transaction);
 
 	Optional<Transaction> findById(String transactionId);
+
+	void deleteTransaction(String idTransaction);
 }
